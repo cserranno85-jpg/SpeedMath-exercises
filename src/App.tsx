@@ -5,6 +5,7 @@ import { Game } from './components/Game';
 import { GameOver } from './components/GameOver';
 import { Stats } from './components/Stats';
 import { BrainCircuit } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 type AppState = 'MENU' | 'PLAYING' | 'GAMEOVER' | 'STATS';
 
@@ -76,37 +77,86 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans tracking-tight flex items-center justify-center p-4 md:p-8 selection:bg-indigo-100 overflow-y-auto">
+    <div className="min-h-screen w-full relative bg-gradient-to-br from-[#FAF5E6] via-[#EFE7D0] to-[#DFD6BA] text-slate-900 font-sans tracking-tight flex items-center justify-center p-4 md:p-8 selection:bg-indigo-100 overflow-x-hidden overflow-y-auto">
        
-       {appState === 'MENU' && (
-           <Menu 
-             settings={settings} 
-             onSettingsChange={handleSettingsChange}
-             onStartGame={handleStartGame}
-             onViewStats={() => setAppState('STATS')}
-           />
-       )}
+       {/* Premium Lively Floating Orbs for high resolution and premium effects */}
+       <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-gradient-to-tr from-purple-300 to-pink-300 filter blur-[100px] opacity-35 animate-pulse pointer-events-none"></div>
+       <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-gradient-to-br from-emerald-250 to-sky-300 filter blur-[120px] opacity-30 animate-pulse pointer-events-none" style={{ animationDuration: '8s' }}></div>
+       <div className="absolute top-1/2 left-1/3 w-80 h-80 rounded-full bg-gradient-to-r from-amber-200 to-rose-250 filter blur-[110px] opacity-25 animate-pulse pointer-events-none" style={{ animationDuration: '6s' }}></div>
+       
+       {/* Subtle tech grid textured overlay */}
+       <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none"></div>
+       
+       <div className="relative z-10 w-full flex items-center justify-center">
+          <AnimatePresence mode="wait">
+             {appState === 'MENU' && (
+                 <motion.div
+                   key="menu"
+                   initial={{ opacity: 0, y: 30 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   exit={{ opacity: 0, y: -20 }}
+                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                   className="w-full flex justify-center"
+                 >
+                    <Menu 
+                      settings={settings} 
+                      onSettingsChange={handleSettingsChange}
+                      onStartGame={handleStartGame}
+                      onViewStats={() => setAppState('STATS')}
+                    />
+                 </motion.div>
+             )}
 
-       {appState === 'PLAYING' && (
-           <Game 
-             settings={settings}
-             onEndGame={handleEndGame}
-           />
-       )}
+             {appState === 'PLAYING' && (
+                 <motion.div
+                   key="playing"
+                   initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                   animate={{ opacity: 1, scale: 1, y: 0 }}
+                   exit={{ opacity: 0, scale: 0.96, y: -15 }}
+                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                   className="w-full flex justify-center"
+                 >
+                    <Game 
+                      settings={settings}
+                      onEndGame={handleEndGame}
+                      onHome={() => setAppState('MENU')}
+                    />
+                 </motion.div>
+             )}
 
-       {appState === 'GAMEOVER' && (
-           <GameOver 
-             score={lastScore}
-             totalQuestions={lastTotal}
-             history={lastHistory}
-             onPlayAgain={handleStartGame}
-             onMenu={() => setAppState('MENU')}
-           />
-       )}
+             {appState === 'GAMEOVER' && (
+                 <motion.div
+                   key="gameover"
+                   initial={{ opacity: 0, y: 30 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   exit={{ opacity: 0, y: -20 }}
+                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                   className="w-full flex justify-center"
+                 >
+                    <GameOver 
+                      score={lastScore}
+                      totalQuestions={lastTotal}
+                      history={lastHistory}
+                      onPlayAgain={handleStartGame}
+                      onMenu={() => setAppState('MENU')}
+                    />
+                 </motion.div>
+             )}
 
-       {appState === 'STATS' && (
-           <Stats onBack={() => setAppState('MENU')} />
-       )}
+             {appState === 'STATS' && (
+                 <motion.div
+                   key="stats"
+                   initial={{ opacity: 0, y: 30 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   exit={{ opacity: 0, y: -20 }}
+                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                   className="w-full flex justify-center"
+                 >
+                    <Stats onBack={() => setAppState('MENU')} />
+                 </motion.div>
+             )}
+          </AnimatePresence>
+       </div>
     </div>
   );
 }

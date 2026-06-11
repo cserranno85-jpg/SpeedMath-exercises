@@ -1,5 +1,5 @@
 {
-  "name": "Speed Math Exercise",
+  "name": "SpeedMath Coach",
   "description": "A speed math exercise app with real-time handwriting recognition for answers.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
